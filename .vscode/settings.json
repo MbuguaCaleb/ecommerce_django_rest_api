@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "myenv/bin/python",
+    "editor.tabSize": 4,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false
+
+}
