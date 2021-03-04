@@ -1,5 +1,3 @@
-
-
 users = [
     {
         "userId": 1,
