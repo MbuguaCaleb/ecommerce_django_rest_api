@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .jsondata import users
+from .models import Product
+from .serializers import ProductSerializer
 # Create your views here.
 
 
@@ -24,14 +26,16 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    return Response(users)
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    # Data needs to be serialized before its returned to the frontend
+    # when we are using the django rest framework we must serialize the data we are returning
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getProduct(request, pk):
-    user = None
-    for i in users:
-        if i['userId'] == pk:
-            user = i
-            break
-    return Response(user)
+    product = Product.objects.get(_id=pk)
+    # when returning one object many is set to false
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
