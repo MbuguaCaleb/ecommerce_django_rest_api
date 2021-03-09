@@ -2,16 +2,13 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .jsondata import users
-from .models import Product
 from django.contrib.auth.models import User
-from .serializers import ProductSerializer, UserSerializer, UserSerializerWithToken
+from base.serializers import UserSerializer, UserSerializerWithToken
 # Create your views here.
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-# token customization
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -80,23 +77,4 @@ def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
 
-    return Response(serializer.data)
-
-
-# get all Products
-@api_view(['GET'])
-def getProducts(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-    # Data needs to be serialized before its returned to the frontend
-    # when we are using the django rest framework we must serialize the data we are returning
-    return Response(serializer.data)
-
-
-# get Single Products
-@api_view(['GET'])
-def getProduct(request, pk):
-    product = Product.objects.get(_id=pk)
-    # when returning one object many is set to false
-    serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
